@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MongoDB Introduction I</title>
+  <meta charset="utf-8">
+  <meta name="description" content="MongoDB Introduction I">
+  <meta name="author" content="Ada Lee">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>MongoDB Introduction I</h1>
+    <h2></h2>
+    <p>Ada Lee<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>What is MongoDB</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><a href="http://en.wikipedia.org/wiki/MongoDB">MongoDB</a> is a cross-platform document-oriented database. Classified as a NoSQL database, MongoDB eschews the traditional table-based relational database structure, in favor of JSON-like documents with dynamic schemas (MongoDB calls the format BSON), making the integration of data in certain types of applications easier and faster. Released under a combination of the GNU Affero General Public License and the Apache License, MongoDB is free and open-source software. MongoDB has been adopted as backend software by a number of major websites and services, including Craigslist, eBay, Foursquare, SourceForge, Viacom, and the New York Times among others. MongoDB is the most popular NoSQL database system.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>What is JSON</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><a href="http://json.org/">JSON</a> (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. It is based on a subset of the JavaScript Programming Language, Standard ECMA-262 3rd Edition - December 1999. JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C-family of languages, including C, C++, C#, Java,JavaScript,Perl, Python, and many others. These properties make JSON an ideal data-interchange language.  </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>JSON consists of 6 data types, they are</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>string</li>
+<li>number</li>
+<li>object</li>
+<li>array</li>
+<li>boolean (true, false)</li>
+<li>null</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>JSON vs. XML</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>student.json</h3>
+
+<pre><code>{ 
+        &quot;_id&quot; : 123,
+        &quot;sName&quot; : &quot;Amy&quot;, 
+        &quot;GPA&quot; : 3.9,
+        &quot;sizeHS&quot; : 1000
+}
+</code></pre>
+
+<h3>student.xml</h3>
+
+<pre><code>&lt;student&gt;
+        &lt;id&gt;123&lt;/id&gt;
+        &lt;sName&gt;Amy&lt;/sName&gt;
+        &lt;GPA&gt;3.9&lt;/GPA&gt;
+        &lt;sizeHS&gt;1000&lt;/sizeHS&gt;
+&lt;/student&gt;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>JSON on the internet</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Question</h3>
+
+<ul>
+<li>What is Spanish alias for Beatles?</li>
+</ul>
+
+<h3>Query</h3>
+
+<ul>
+<li><a href="http://musicbrainz.org/ws/2/artist/?query=artist%3ABEATLES&amp;fmt=json">http://musicbrainz.org/ws/2/artist/?query=artist%3ABEATLES&amp;fmt=json</a><br></li>
+</ul>
+
+<h3>Result</h3>
+
+<ul>
+<li>Get a JSON document</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>JSON on the internet</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Analyse on the document</h3>
+
+<pre><code class="js">artists = doc.artists
+artists[0].name = &quot;The Beatles&quot;
+artists[1].name = &quot;Counterfeit Beatles&quot;
+artists[1].name = &quot;Jolly Joker and the Plastic Beatles of the Universe&quot;
+aliases = artists[0].aliases
+aliases[0].locale = &quot;ko&quot;
+aliases[2].locale = null
+aliases[5].locale = &quot;es&quot;
+aliases[5] ={
+                &quot;begin-date&quot; : null,
+                &quot;end-date&quot; : null,
+                &quot;locale&quot; : &quot;es&quot;,
+                &quot;name&quot; : &quot;Los Beatles&quot;,
+                &quot;primary&quot; : true,
+                &quot;sort-name&quot; : &quot;Los Beatles&quot;,
+                &quot;type&quot; : null
+            }
+aliases[5].name = &quot;Los Beatles&quot;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>JSON on the internet</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Question</h3>
+
+<ul>
+<li>What is Spanish alias for Beatles?</li>
+</ul>
+
+<h3>Query</h3>
+
+<ul>
+<li><a href="http://musicbrainz.org/ws/2/artist/?query=artist%3ABEATLES&amp;fmt=json">http://musicbrainz.org/ws/2/artist/?query=artist%3ABEATLES&amp;fmt=json</a><br></li>
+</ul>
+
+<h3>Result</h3>
+
+<ul>
+<li>Get a JSON document<br></li>
+</ul>
+
+<h3>Answer</h3>
+
+<ul>
+<li>After analysing the json document, we know that Spanish alias for Beatles is &quot;Los Beatles&quot;.</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>MongoDB vs. SQL</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>database &lt;--&gt; database</li>
+<li>table &lt;--&gt; collection</li>
+<li>row &lt;--&gt; document or BSON document</li>
+<li>column &lt;--&gt; field</li>
+<li>index &lt;--&gt; index</li>
+<li>table joins &lt;--&gt; embedded documents and linking</li>
+<li>primary key Specify any unique column or column combination as primary key. &lt;--&gt; primary key. In MongoDB, the primary key is automatically set to the _id field.</li>
+<li><a href="http://docs.mongodb.org/manual/reference/sql-comparison/">see more here</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>MongoDB CRUD operations</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Create data<br></li>
+<li>Read data<br></li>
+<li>Update data<br></li>
+<li>Destroy data<br></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Read data</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>findOne &amp; find</h3>
+
+<pre><code class="find">mongo&gt; db
+company
+mongo&gt; db.colleagues.findOne()
+{
+        &quot;_id&quot; : 1,
+        &quot;name&quot; : &quot;Bob&quot;,
+        &quot;gender&quot; : &quot;Male&quot;
+}
+mongo&gt; db.colleagues.find()
+{ &quot;_id&quot; : 1, &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 2, &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 3, &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 4, &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 5, &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Update data</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>save &amp; update</h3>
+
+<pre><code class="save">mongo&gt; ada = db.colleagues.findOne({_id : 6})
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+mongo&gt; ada.name = &quot;Ada&quot;
+Ada
+mongo&gt; db.colleagues.save(ada)
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+mongo&gt; db.colleagues.find({_id : 6})
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+</code></pre>
+
+<pre><code class="update">mongo&gt; db.colleagues.findOne({_id : 6})
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+mongo&gt; db.colleagues.update({_id : 6}, {$set : {name : &quot;Ada&quot;}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+mongo&gt; db.colleagues.find({_id : 6})
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>Create data</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>save &amp; insert (collection will be automatically created)</h3>
+
+<pre><code class="create">mongo&gt; show collections
+blog
+colleagues
+system.indexes
+mongo&gt; db.students.save({ _id : 123, sName : &quot;Amy&quot;, GPA : 3.9})
+WriteResult({ &quot;nMatched&quot; : 0, &quot;nUpserted&quot; : 1, &quot;nModified&quot; : 0, &quot;_id&quot; : 123 })
+mongo&gt; show collections
+blog
+colleagues
+students
+system.indexes
+mongo&gt; db.students.insert({ sName : &quot;Bob&quot;, GPA : 3.4})
+WriteResult({ &quot;nInserted&quot; : 1 })
+mongo&gt; db.students.find()
+{ &quot;_id&quot; : 123, &quot;sName&quot; : &quot;Amy&quot;, &quot;GPA&quot; : 3.9 }
+{ &quot;_id&quot; : ObjectId(&quot;555dd446eebd25e93abe9d24&quot;), &quot;sName&quot; : &quot;Bob&quot;, &quot;GPA&quot; : 3.4 }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>Destroy data</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>remove some documents</h3>
+
+<pre><code class="remove_some">mongo&gt; db.students.find()
+{ &quot;_id&quot; : 123, &quot;sName&quot; : &quot;Amy&quot;, &quot;GPA&quot; : 3.9 }
+{ &quot;_id&quot; : ObjectId(&quot;555dd446eebd25e93abe9d24&quot;), &quot;sName&quot; : &quot;Bob&quot;, &quot;GPA&quot; : 3.4 }
+mongo&gt; db.students.remove({ &quot;sName&quot; : &quot;Bob&quot;})
+WriteResult({ &quot;nRemoved&quot; : 1 })
+mongo&gt; db.students.find()
+{ &quot;_id&quot; : 123, &quot;sName&quot; : &quot;Amy&quot;, &quot;GPA&quot; : 3.9 }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Destroy data</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>remove all documents in a collection</h3>
+
+<pre><code class="remove_all">mongo&gt; db.colleagues.find()
+{ &quot;_id&quot; : 1, &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 2, &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 3, &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 4, &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 5, &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+mongo&gt; db.colleagues.remove({})
+WriteResult({ &quot;nRemoved&quot; : 6 })
+mongo&gt; show collections
+colleagues
+students
+system.indexes
+mongo&gt; db.colleagues.find()
+mongo&gt;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Destroy data</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>drop a collection</h3>
+
+<pre><code class="drop">mongo&gt; show collections
+blog
+colleagues
+students
+system.indexes
+mongo&gt; db.students.find()
+{ &quot;_id&quot; : 123, &quot;sName&quot; : &quot;Amy&quot;, &quot;GPA&quot; : 3.9 }
+mongo&gt; db.students.drop()
+true
+mongo&gt; show collections
+blog
+colleagues
+system.indexes
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>Destroy data</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>drop the whole database</h3>
+
+<pre><code class="dropDatabase">mongo&gt; show dbs
+admin    (empty)
+company  0.078GB
+local    0.078GB
+test     0.078GB
+mongo&gt; db
+company
+mongo&gt; show collections
+blog
+colleagues
+system.indexes
+mongo&gt; db.dropDatabase()
+{ &quot;dropped&quot; : &quot;company&quot;, &quot;ok&quot; : 1 }
+mongo&gt; db
+company
+mongo&gt; show collections
+mongo&gt;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Create a database mydb (Optional)</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="mydb">mongo&gt; show dbs
+admin    (empty)
+company  (empty)
+local    0.078GB
+test     0.078GB
+mongo&gt; use mydb    // comment by Ada, create mydb db implicitly
+switched to db mydb
+mongo&gt; db.stuff.insert({ &quot;_id&quot; : 123, &quot;sName&quot; : &quot;Amy&quot;, &quot;GPA&quot; : 3.9 })
+WriteResult({ &quot;nInserted&quot; : 1 })
+mongo&gt; db.stuff.insert({company : &quot;ASESH&quot;, location : &quot;Shanghai, China&quot;})
+WriteResult({ &quot;nInserted&quot; : 1 })
+mongo&gt; db.stuff.insert({person : &quot;Ada&quot;, favorite_foods : [&quot;banana&quot;, &quot;hamburger&quot;, &quot;fish&quot;]})
+WriteResult({ &quot;nInserted&quot; : 1 })
+mongo&gt; db.stuff.find({}, {_id : 0})  // comment, see all doc in stuff but do not show _id field
+{ &quot;sName&quot; : &quot;Amy&quot;, &quot;GPA&quot; : 3.9 }
+{ &quot;company&quot; : &quot;ASESH&quot;, &quot;location&quot; : &quot;Shanghai, China&quot; }
+{ &quot;person&quot; : &quot;Ada&quot;, &quot;favorite_foods&quot; : [ &quot;banana&quot;, &quot;hamburger&quot;, &quot;fish&quot; ] }
+
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Blog Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>SQL ER models</h3>
+
+<p><img src="assets/img/blog_sql.png" height=400></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>Blog Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>SQL tables</h3>
+
+<p><img src="assets/img/blog_tables.png" height=400 width = 1000></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>Blog Example</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>mongodb blog collection</h3>
+
+<p><img src="assets/img/blog.png" height=500></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>Some MongoDB Resources</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><a href="https://university.mongodb.com/courses/schedule">MongoDB Online Courses</a></li>
+<li><a href="http://docs.mongodb.org/manual/">MongoDB Manual</a></li>
+<li><a href="http://usuaris.tinet.cat/bertolin/pdfs/mongodb_%20the%20definitive%20guide%20-%20kristina%20chodorow_1401.pdf">MongoDB: The Definitive Guide, 2nd Edition by Kristina Chodorow</a></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='What is MongoDB'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='What is JSON'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='JSON consists of 6 data types, they are'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='JSON vs. XML'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='JSON on the internet'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='JSON on the internet'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='JSON on the internet'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='MongoDB vs. SQL'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='MongoDB CRUD operations'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Read data'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Update data'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Create data'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Destroy data'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Destroy data'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Destroy data'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Destroy data'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Create a database mydb (Optional)'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Blog Example'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='Blog Example'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='Blog Example'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='Some MongoDB Resources'>
+         21
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
