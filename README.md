@@ -1,2 +1,2 @@
 ## MongoDB Introduction  
-### Link below url.
+[http://adalee2future.github.io/mongo-intro/](http://adalee2future.github.io/mongo-intro/)
