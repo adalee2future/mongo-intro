@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MongoDB Introduction II</title>
+  <meta charset="utf-8">
+  <meta name="description" content="MongoDB Introduction II">
+  <meta name="author" content="Ada Lee">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>MongoDB Introduction II</h1>
+    <h2></h2>
+    <p>Ada Lee<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Export a collection</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>See collection colleagues before export</h3>
+
+<pre><code class="find">Ada Desktop $ mongo
+MongoDB shell version: 2.6.6
+connecting to: test
+&gt; use company
+switched to db company
+&gt; db.colleagues.find()
+{ &quot;_id&quot; : 1, &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 2, &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 3, &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 4, &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 5, &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+&gt; ^C
+bye
+Ada Desktop $
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>Export a collection</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>Export collection colleagues</h3>
+
+<pre><code class="export">Ada Desktop $ ls colleagues.json
+ls: colleagues.json: No such file or directory
+Ada Desktop $ mongoexport --db company  --collection colleagues --out colleagues.json
+connected to: 127.0.0.1
+exported 6 records
+Ada Desktop $ ls colleagues.json
+colleagues.json
+Ada Desktop $ cat colleagues.json
+{ &quot;_id&quot; : 1, &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 2, &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 3, &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 4, &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 5, &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+Ada Desktop $ 
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Import a collection</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>use mongoimport to import colleagues.json</h3>
+
+<pre><code class="import">Ada Desktop $ mongoimport --db company_backup --collection colleagues &lt; colleagues.json
+connected to: 127.0.0.1
+2015-05-26T22:34:09.493+0800 imported 6 objects
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Import a collection</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>look at the database company_backup</h3>
+
+<pre><code class="company_backup">Ada Desktop $ mongo
+MongoDB shell version: 2.6.6
+connecting to: test
+&gt; use company_backup
+switched to db company_backup
+&gt; show collections
+colleagues
+system.indexes
+&gt; db.colleagues.find()
+{ &quot;_id&quot; : 1, &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 2, &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 3, &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 4, &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 5, &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+&gt;
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>Some operations</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>count</h3>
+
+<pre><code>&gt; db.colleagues.count()
+6
+&gt; db.colleagues.find( { gender : &quot;Female&quot; } ).count()
+4
+</code></pre>
+
+<h3>distinct</h3>
+
+<pre><code>&gt; db.colleagues.distinct(&quot;gender&quot;)
+[ &quot;Male&quot;, &quot;Female&quot; ]
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>Some operations</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>pretty</h3>
+
+<pre><code>&gt; db.colleagues.findOne( { name : &quot;Ada&quot; } )
+{
+        &quot;_id&quot; : 6,
+        &quot;name&quot; : &quot;Ada&quot;,
+        &quot;gender&quot; : &quot;Female&quot;
+}
+&gt; db.colleagues.find( { name : &quot;Ada&quot; } )
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+&gt; db.colleagues.find( { name : &quot;Ada&quot; } ).pretty()
+{
+        &quot;_id&quot; : 6,
+        &quot;name&quot; : &quot;Ada&quot;,
+        &quot;gender&quot; : &quot;Female&quot;
+}
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>Some operations</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>limit</h3>
+
+<pre><code>&gt; db.colleagues.find().limit(2)
+{ &quot;_id&quot; : 1, &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 2, &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+&gt; db.colleagues.find().limit(2).pretty()
+{
+        &quot;_id&quot; : 1,
+        &quot;name&quot; : &quot;Bob&quot;,
+        &quot;gender&quot; : &quot;Male&quot;
+}
+{
+        &quot;_id&quot; : 2,
+        &quot;name&quot; : &quot;Johanne&quot;,
+        &quot;gender&quot; : &quot;Female&quot;
+}
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>Some operations</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>skip</h3>
+
+<pre><code>&gt; db.colleagues.find().skip(2)
+{ &quot;_id&quot; : 3, &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 4, &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 5, &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+&gt; db.colleagues.find().skip(2).limit(1)
+{ &quot;_id&quot; : 3, &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+&gt; db.colleagues.find().skip(2).limit(1).pretty()
+{
+        &quot;_id&quot; : 3,
+        &quot;name&quot; : &quot;Michael&quot;,
+        &quot;gender&quot; : &quot;Male&quot;
+}
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>Some operations</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>sort</h3>
+
+<pre><code>&gt; db.colleagues.find( { } , { _id : 0 } )
+{ &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+
+&gt; db.colleagues.find( { } , { _id : 0 } ).sort( { name : -1 } )
+{ &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>Aggregate</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>project</h3>
+
+<pre><code class="project">&gt; db.colleagues.aggregate([
+...     {$project:
+...       {
+...         _id: 0,
+...         name: 1,
+...         gender: 1,
+...       } 
+...     }      
+... ])
+{ &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>Aggregate</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>match</h3>
+
+<pre><code class="match">&gt; db.colleagues.aggregate([
+...     {$match:
+...       {
+...         gender : &quot;Female&quot;
+...       }
+...     }
+... ])
+{ &quot;_id&quot; : 2, &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 4, &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 5, &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>Aggregate</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>group sum</h3>
+
+<pre><code class="group">&gt; db.colleagues.aggregate([
+... { $group:
+...          {
+...              _id:&quot;$gender&quot;,
+...              total: { $sum : 1 }
+...          }
+... }
+... ])
+{ &quot;_id&quot; : &quot;Female&quot;, &quot;total&quot; : 4 }
+{ &quot;_id&quot; : &quot;Male&quot;, &quot;total&quot; : 2 }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>Aggregate</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>group min</h3>
+
+<pre><code>&gt; db.colleagues.aggregate([
+...     {$group:
+...       {
+...         _id: &quot;$gender&quot;,
+...         min_name: {$min: &quot;$name&quot;}
+...       } 
+...     }          
+... ])
+{ &quot;_id&quot; : &quot;Female&quot;, &quot;min_name&quot; : &quot;Ada&quot; }
+{ &quot;_id&quot; : &quot;Male&quot;, &quot;min_name&quot; : &quot;Bob&quot; }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>Aggregate</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>group max</h3>
+
+<pre><code>&gt; db.colleagues.aggregate([
+...     {$group:
+...       {
+...         _id: &quot;$gender&quot;,
+...         min_name: {$max: &quot;$name&quot;}
+...       } 
+...     }          
+... ])
+{ &quot;_id&quot; : &quot;Female&quot;, &quot;min_name&quot; : &quot;Johanne&quot; }
+{ &quot;_id&quot; : &quot;Male&quot;, &quot;min_name&quot; : &quot;Michael&quot; }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>Aggregate</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>sort</h3>
+
+<pre><code>&gt; db.colleagues.aggregate([
+...     {$sort:
+...       {
+...         name: -1
+...       } 
+...     }          
+... ])
+{ &quot;_id&quot; : 3, &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 2, &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 4, &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 1, &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;_id&quot; : 5, &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;_id&quot; : 6, &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-16" style="background:;">
+  <hgroup>
+    <h2>Aggregate</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>pipeline 1</h3>
+
+<pre><code>&gt; db.colleagues.aggregate([
+...  {$project:
+...       {
+...         _id : 0,
+...         name : 1,
+...         gender : 1
+...       } 
+...     }
+... ])
+{ &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;name&quot; : &quot;Johanne&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;name&quot; : &quot;Emily&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Amy&quot;, &quot;gender&quot; : &quot;Female&quot; }
+{ &quot;name&quot; : &quot;Ada&quot;, &quot;gender&quot; : &quot;Female&quot; }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>Aggregate</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>pipeline 2</h3>
+
+<pre><code>&gt; db.colleagues.aggregate([
+...  {$project:
+...       {
+...         _id : 0,
+...         name : 1,
+...         gender : 1
+...       } 
+...     },
+...     {$match:
+...       {
+...         gender: &quot;Male&quot;
+...       } 
+...     }
+... ])
+{ &quot;name&quot; : &quot;Bob&quot;, &quot;gender&quot; : &quot;Male&quot; }
+{ &quot;name&quot; : &quot;Michael&quot;, &quot;gender&quot; : &quot;Male&quot; }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>Aggregate</h2>
+  </hgroup>
+  <article data-timings="">
+    <h3>pipeline 3</h3>
+
+<pre><code>&gt; db.colleagues.aggregate([
+... {$project:
+...       { _id : 0, name : 1, gender : 1 } 
+...     },
+...     {$match:
+...       { gender: &quot;Male&quot; } 
+...     },
+...     {$group:
+...       { _id : null, total_male : { &quot;$sum&quot; : 1 } } 
+...     },          
+... ])
+{ &quot;_id&quot; : null, &quot;total_male&quot; : 2 }
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Export a collection'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Export a collection'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Import a collection'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Import a collection'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Some operations'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Some operations'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Some operations'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Some operations'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Some operations'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='Aggregate'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='Aggregate'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='Aggregate'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='Aggregate'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='Aggregate'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='Aggregate'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='Aggregate'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='Aggregate'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='Aggregate'>
+         18
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
